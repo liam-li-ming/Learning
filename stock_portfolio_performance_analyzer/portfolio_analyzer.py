@@ -326,26 +326,3 @@ class PortfolioAnalyzer:
         self.calculate_portfolio_value_history()
         self.calculate_metrics()
         self.print_performance_summary()
-
-if __name__ == "__main__":
-    # Sample portfolio
-    portfolio = {
-        'AAPL': {
-            'shares': 10,
-            'purchase_price': 150.0,
-            'purchase_date': '2023-01-01'
-        },
-        'GOOGL': {
-            'shares': 5,
-            'purchase_price': 100.0,
-            'purchase_date': '2023-01-01'
-        },
-        'MSFT': {
-            'shares': 80,
-            'purchase_price': 250.0,
-            'purchase_date': '2023-01-01'
-        }
-    }
-
-    analyzer = PortfolioAnalyzer(portfolio)
-    analyzer.run_analysis()
