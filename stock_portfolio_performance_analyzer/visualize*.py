@@ -397,8 +397,3 @@ class PortfolioVisualization:
     def close_all(self):
         """Close all figure windows"""
         plt.close('all')
-
-# Test the module
-if __name__ == "__main__":
-    # This would normally be called from main.py after running the analyzer
-    print("Visualizer module ready. Use with PortfolioAnalyzer.")
