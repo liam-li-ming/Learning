@@ -1,0 +1,6 @@
+ticker,shares,purchase_price,purchase_date
+AAPL,10,150.0,2023-01-01
+GOOGL,10,100.0,2023-01-01
+MSFT,10,250.0,2023-01-01
+TSLA,10,200.0,2023-01-01
+AMZN,10,120.0,2023-01-01
