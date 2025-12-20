@@ -21,7 +21,6 @@ def main():
     # Print welcome banner
     print("\n" + "="*70)
     print(" "*15 + "STOCK PORTFOLIO PERFORMANCE ANALYZER")
-    print(" "*25 + "Version 1.0")
     print("="*70)
     
     # Check command line arguments
@@ -52,7 +51,7 @@ def main():
                 
                 run_full_analysis(portfolio, generate_pdf=generate_pdf)
             else:
-                print("\n❌ Could not load portfolio. Use --help for usage information.")
+                print("\n❌ Could not load portfolio. ")
                 return
     
     else:
