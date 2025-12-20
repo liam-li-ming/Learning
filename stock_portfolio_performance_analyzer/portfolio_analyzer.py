@@ -23,11 +23,11 @@ class PortfolioAnalyzer:
     }
     """
 
-    def __init__(self, portfolio, benchmark = "^IXIC"):
+    def __init__(self, portfolio, benchmark = "^GSPC"):
         """
         Args:
             portfolio (dict): Portfolio dictionary
-            benchmark (str): Benchmark ticker symbol (default: NASDAQ)
+            benchmark (str): Benchmark ticker symbol (default: S&P 500)
         """
         self.portfolio = portfolio
         self.benchmark = benchmark

@@ -10,18 +10,21 @@ import os
 class PortfolioVisualization: 
     """Create visualizations for protfolio performance"""
 
-    def __init__(self, output_directory = 'outputs/visualizations'):
+    def __init__(self, output_directory = 'output/charts'):
         """
-        Args: 
+        Args:
             output_directory (str): Directory to save visualization charts
         """
-        self.output_directory = output_directory
+        # Get the directory where this file is located
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        # Create output path relative to the script directory
+        self.output_directory = os.path.join(script_dir, output_directory)
         os.makedirs(self.output_directory, exist_ok = True) 
 
         self.figures = {}
 
     def plot_portfolio_value(self, portfolio_history, benchmark_data = None, 
-                             benchmark_label = 'Nasdaq Composite', save = True):
+                             benchmark_label = 'S&P 500', save = True):
         """
         Plot portfolio value over time
 
@@ -64,8 +67,8 @@ class PortfolioVisualization:
         plt.tight_layout()
         
         if save:
-            filepath = os.path.join(self.output_dir, 'portfolio_value.png')
-            plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
+            filepath = os.path.join(self.output_directory, 'portfolio_value.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
             print(f"Saved: {filepath}")
         
         self.figures['portfolio_value'] = fig
@@ -107,8 +110,8 @@ class PortfolioVisualization:
         plt.tight_layout()
         
         if save:
-            filepath = os.path.join(self.output_dir, 'returns_distribution.png')
-            plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
+            filepath = os.path.join(self.output_directory, 'returns_distribution.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
             print(f"Saved: {filepath}")
         
         self.figures['returns_distribution'] = fig
@@ -161,8 +164,8 @@ class PortfolioVisualization:
         plt.tight_layout()
         
         if save:
-            filepath = os.path.join(self.output_dir, 'drawdown.png')
-            plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
+            filepath = os.path.join(self.output_directory, 'drawdown.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
             print(f"Saved: {filepath}")
         
         self.figures['drawdown'] = fig
@@ -204,8 +207,8 @@ class PortfolioVisualization:
         plt.tight_layout()
 
         if save:
-            filepath = os.path.join(self.output_dir, 'allocation.png')
-            plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
+            filepath = os.path.join(self.output_directory, 'allocation.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
             print(f"Saved: {filepath}")
         
         self.figures['allocation'] = fig
@@ -244,8 +247,8 @@ class PortfolioVisualization:
         plt.tight_layout()
 
         if save:
-            filepath = os.path.join(self.output_dir, 'individual_performance.png')
-            plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
+            filepath = os.path.join(self.output_directory, 'individual_performance.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
             print(f"Saved: {filepath}")
         
         self.figures['individual_performance'] = fig
@@ -288,36 +291,36 @@ class PortfolioVisualization:
             ax.annotate(ticker, (volatility, annualized_return),
                        fontsize = 11, fontweight = 'bold',
                        xytext = (5, 5), textcoords = 'offset points')
-            
-            # Add quadrant lines
-            ax.axhline(y = 0, color = 'gray', linestyle = '--', linewidth = 1, alpha = 0.5)
-            ax.axvline(x = ax.get_xlim()[0] + (ax.get_xlim()[1] - ax.get_xlim()[0])/2, 
-                       color = 'gray', linestyle = '--', linewidth = 1, alpha = 0.5)
-            
-            # Set titles and labels
-            ax.set_title('Risk-Return Profile of Holdings', fontsize = 16, fontweight = 'bold', pad = 20)
-            ax.set_xlabel('Volatility (Annualized %)', fontsize = 12)
-            ax.set_ylabel('Return (Annualized %)', fontsize = 12)
-            ax.grid(True, alpha = 0.3)
 
-            # Add legend for bubble size
-            legend_elements = [Line2D([0], [0], marker = 'o', color = 'w', 
-                                    markerfacecolor = 'gray', markersize = ms, 
+        # Add quadrant lines
+        ax.axhline(y = 0, color = 'gray', linestyle = '--', linewidth = 1, alpha = 0.5)
+        ax.axvline(x = ax.get_xlim()[0] + (ax.get_xlim()[1] - ax.get_xlim()[0])/2,
+                   color = 'gray', linestyle = '--', linewidth = 1, alpha = 0.5)
 
-                                    alpha = 0.6, label = f'{w}% of portfolio') 
-                                    for ms, w in [(8, 10), (12, 20), (16, 30)]]
-            
-            ax.legend(handles = legend_elements, loc = 'best', fontsize = 10, 
-                      title = 'Portfolio Weight', title_fontsize = 11)
-            plt.tight_layout()
+        # Set titles and labels
+        ax.set_title('Risk-Return Profile of Holdings', fontsize = 16, fontweight = 'bold', pad = 20)
+        ax.set_xlabel('Volatility (Annualized %)', fontsize = 12)
+        ax.set_ylabel('Return (Annualized %)', fontsize = 12)
+        ax.grid(True, alpha = 0.3)
 
-            if save:
-                filepath = os.path.join(self.output_dir, 'risk_return.png')
-                plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
-                print(f"Saved: {filepath}")
-        
-            self.figures['risk_return'] = fig
-            return fig
+        # Add legend for bubble size
+        legend_elements = [Line2D([0], [0], marker = 'o', color = 'w',
+                                markerfacecolor = 'gray', markersize = ms,
+
+                                alpha = 0.6, label = f'{w}% of portfolio')
+                                for ms, w in [(8, 10), (12, 20), (16, 30)]]
+
+        ax.legend(handles = legend_elements, loc = 'best', fontsize = 10,
+                  title = 'Portfolio Weight', title_fontsize = 11)
+        plt.tight_layout()
+
+        if save:
+            filepath = os.path.join(self.output_directory, 'risk_return.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
+            print(f"Saved: {filepath}")
+
+        self.figures['risk_return'] = fig
+        return fig
 
     def plot_rolling_returns(self, portfolio_history, window = 30, save = True):
         """
@@ -356,8 +359,8 @@ class PortfolioVisualization:
         plt.tight_layout()
 
         if save:
-            filepath = os.path.join(self.output_dir, 'rolling_returns.png')
-            plt.savefig(filepath, dpi = 1200, bbox_inches = 'tight')
+            filepath = os.path.join(self.output_directory, 'rolling_returns.png')
+            plt.savefig(filepath, dpi = 800, bbox_inches = 'tight')
             print(f"Saved: {filepath}")
         
         self.figures['rolling_returns'] = fig
@@ -374,7 +377,7 @@ class PortfolioVisualization:
         # Retrieve data from analyzer
         portfolio_history = analyzer.portfolio_history
         benchmark_data = analyzer.benchmark_data
-        holdings_performance = analyzer.calculate_individual_holdings_performance()
+        holdings_performance = analyzer.calculate_each_holding_performance()
         
         # Calculate returns
         returns = portfolio_history.pct_change().dropna()
@@ -388,7 +391,7 @@ class PortfolioVisualization:
         self.plot_risk_return_scatter(analyzer.holdings_data, holdings_performance)
         self.plot_rolling_returns(portfolio_history)
         
-        print(f"\n All charts created and saved to: {self.output_dir}")
+        print(f"\n All charts created and saved to: {self.output_directory}")
     
     def show_all(self):
         """Display all created figures"""

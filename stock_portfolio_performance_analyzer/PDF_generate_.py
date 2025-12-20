@@ -17,8 +17,11 @@ class ReportGenerator:
         Args:
             output_dir (str): Directory to save reports
         """
-        self.output_dir = output_dir
-        os.makedirs(output_dir, exist_ok=True)
+        # Get the directory where this file is located
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        # Create output path relative to the script directory
+        self.output_dir = os.path.join(script_dir, output_dir)
+        os.makedirs(self.output_dir, exist_ok=True)
         
         # Set up styles
         self.styles = getSampleStyleSheet()
@@ -178,7 +181,7 @@ class ReportGenerator:
         header = Paragraph("Individual Holdings Performance", self.styles['SectionHeader'])
         elements.append(header)
         
-        holdings_perf = analyzer.calculate_individual_holdings_performance()
+        holdings_perf = analyzer.calculate_each_holding_performance()
         
         # Create holdings table
         data = [['Ticker', 'Shares', 'Purchase Price', 'Current Price', 
@@ -241,16 +244,20 @@ class ReportGenerator:
         else:
             print(f"Warning: Chart not found: {chart_path}")
     
-    def generate_report(self, analyzer, charts_dir='output/charts', 
+    def generate_report(self, analyzer, charts_dir=None,
                        filename='portfolio_report.pdf'):
         """
         Generate complete PDF report
-        
+
         Args:
             analyzer (PortfolioAnalyzer): Portfolio analyzer object
-            charts_dir (str): Directory containing chart images
+            charts_dir (str): Directory containing chart images (default: output/charts relative to this script)
             filename (str): Output filename
         """
+        # If charts_dir not specified, use default relative to this script
+        if charts_dir is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            charts_dir = os.path.join(script_dir, 'output/charts')
 
         # Create PDF file path
         filepath = os.path.join(self.output_dir, filename)
